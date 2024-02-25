@@ -34,30 +34,34 @@ architecture str_arch of napoleon is
    signal wr: std_logic;
 
 begin
+   uart_unit: entity work.uart(behaviour)
+      generic map(Baud_Rate=>19200)
+      port map(clk=>clk, reset=>reset,
+      rx=>rx,tx=>tx,byte_to_transmit=>ascii_t,
+      received_byte => ascii_r);
+   -- baud_gen_unit: entity work.mod_m_counter(arch)
+   --    generic map(M=>DVSR, N=>DVSR_BIT)
+   --    port map(
+	--   clk=>clk, reset=>reset,
+   --    q=>open, max_tick=>tick
+	--   );
 
-   baud_gen_unit: entity work.mod_m_counter(arch)
-      generic map(M=>DVSR, N=>DVSR_BIT)
-      port map(
-	  clk=>clk, reset=>reset,
-      q=>open, max_tick=>tick
-	  );
+   -- uart_rx_unit: entity work.uart_rx(arch)
+   --    generic map(DBIT=>DBIT, SB_TICK=>SB_TICK)
+   --    port map(
+	--   clk=>clk, reset=>reset, rx=>rx,
+   --    s_tick=>tick, rx_done_tick=>rx_done,
+   --    dout=>ascii_r
+	--   );
 
-   uart_rx_unit: entity work.uart_rx(arch)
-      generic map(DBIT=>DBIT, SB_TICK=>SB_TICK)
-      port map(
-	  clk=>clk, reset=>reset, rx=>rx,
-      s_tick=>tick, rx_done_tick=>rx_done,
-      dout=>ascii_r
-	  );
-
-   uart_tx_unit: entity work.uart_tx(arch)
-      generic map(DBIT=>DBIT, SB_TICK=>SB_TICK)
-      port map(
-	  clk=>clk, reset=>reset,
-      tx_start=>tx_start,
-      s_tick=>tick, din=>ascii_t,
-      tx_done_tick=> tx_done, tx=>tx
-	  );
+   -- uart_tx_unit: entity work.uart_tx(arch)
+   --    generic map(DBIT=>DBIT, SB_TICK=>SB_TICK)
+   --    port map(
+	--   clk=>clk, reset=>reset,
+   --    tx_start=>tx_start,
+   --    s_tick=>tick, din=>ascii_t,
+   --    tx_done_tick=> tx_done, tx=>tx
+	--   );
    
    cnt_rom_unit: entity work.cnt_rom(arch)
 	  generic map(N=>ROM_ADDR_WIDTH, M=>KEY_LENGTH)
