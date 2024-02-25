@@ -17,7 +17,7 @@ entity uart_tx is
    );
 end uart_tx ;
 
-architecture arch of uart_tx is
+architecture behaviour of uart_tx is
    type state_type is (idle, start, data, stop);
    signal state_reg, state_next: state_type;
    signal s_reg, s_next: unsigned(3 downto 0);
@@ -99,4 +99,4 @@ begin
       end case;
    end process;
    tx <= tx_reg;
-end arch;
+end behaviour;

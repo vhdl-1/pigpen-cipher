@@ -7,10 +7,9 @@ entity baud_generator is
         CLOCK_FREQUENCY: integer := 100_000_000;
         BAUD_RATE: integer := 19200;
         OVERSAMPLE: integer := 16;
-        M: integer := integer(ceil(CLOCK_FREQUENCY/(BAUD_RATE*OVERSAMPLE)));
-        N: integer := 9; -- num of bits
+        N: integer := 9 -- num of bits
         -- M: integer := 326 ); -- mod-326 counter 
-
+        );
     port ( 
         clk, reset:   in std_logic;
         to_s_tick:  out std_logic );
@@ -20,10 +19,9 @@ architecture behaviour of baud_generator is
     signal r_reg:   unsigned(N-1 downto 0);
     signal r_next:  unsigned(N-1 downto 0);
     signal q:       std_logic_vector(N-1 downto 0);
-     
+    constant M :integer := integer(CLOCK_FREQUENCY/(BAUD_RATE*OVERSAMPLE));
 ----------------------------------------------------------------------------------
 begin
-    -- register
     process(clk, reset) begin
         if (reset = '1') then
             r_reg <= (others =>'0');
