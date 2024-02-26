@@ -3,9 +3,9 @@
 
 ## Our Group
 - Hannes Weigel
-- Christopher Daffinrud
-- Shahin Ostadahmadi
-- Aditi Deshpande
+- Christopher Karl Omar Daffinrud
+- Shahin Kamil Ostadahmadi
+- Aditi Ravi Deshpande
 - Oscar Melby
 - Ole Eirik Solberg Seljordslia
 
