@@ -67,29 +67,23 @@ begin
       data => key
 	);
 
-   cnt_ram_unit: entity work.cnt_ram(arch)
+   cnt_ram_unit: entity work.ram_counter(arch)
    generic map(N=>RAM_ADDR_WIDTH)
    port map(
-      clk => clk,
-      reset => reset,
-      syn_clr => clrB_ram,
-      load => '0',
-      en => incb_ram,
-      up => '1',
-      d => (others => '0'),
-      max_tick => open,
-      min_tick => open,
-      q => addrB_ram
+      clock => clk,
+	  clear_address => clrB_ram,
+      increment => incb_ram,
+      address => addrB_ram
 	);
 
-   ram_unit: entity work.xilinx_one_port_ram_sync(arch)
+   ram_unit: entity work.ram(arch)
    generic map(ADDR_WIDTH=>RAM_ADDR_WIDTH, DATA_WIDTH=>RAM_DATA_WIDTH)
    port map(
-      clk => clk,
-      wr => wr,
-      addr => addrb_ram,
-      din => cphr_out,
-      dout => ascii_t
+      clock => clk,
+      write_enable => wr,
+      address => addrb_ram,
+      data_in => cphr_out,
+      data_out => ascii_t
 	);
 
    cipher_unit: entity work.cipher(arch)
