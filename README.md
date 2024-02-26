@@ -30,3 +30,7 @@ We created two diagrams: FSM Diagram and ASM Diagram.
 ## Our Result
 After everyone had contributed with their solution for their allocated entity, we sat together adding them into our project and tried to simulate.
 We got errors on the output where they were undefined. We see that our testbench send aditi-characters followed by enter. 
+![alt text](image.png)
+
+We have some thouble knowing where to troubleshoot. We tried to port-map several variables in order to view them in the simulator-view, but they still remained undefined even when we hard-coded them to values. 
+We were unfortunately not able to solve this, but we learned a lot individually when creating our entities. 

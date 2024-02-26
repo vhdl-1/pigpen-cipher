@@ -14,13 +14,19 @@ entity napoleon_top is
    generic(
       ROM_ADDR_WIDTH: integer := 5; -- max size of the key: 2^5=32 > 20
       KEY_LENGTH: integer     := 20; -- length of "joseferreiraportugal"
-	   RAM_ADDR_WIDTH: integer := 10; -- # maximum size of the RAM: 2^10 (1024)
+	   RAM_ADDR_WIDTH: integer := 8; -- # maximum size of the RAM: 2^10 (1024)
 	   RAM_DATA_WIDTH: integer := 8 -- # 8-bit data words
    );
    port(
       clk, reset: in std_logic;
       rx: in std_logic;
-      tx: out std_logic
+      tx: out std_logic;
+      rx_done_p: out std_logic
+      
+--      tx_start_p: out std_logic;
+--      write_p: out std_logic;
+--      ascii_r_p, ascii_t_p: std_logic_vector(7 downto 0)
+
    );
 end napoleon_top;
 
@@ -30,7 +36,7 @@ architecture str_arch of napoleon_top is
    signal ascii_r, ascii_t: std_logic_vector(7 downto 0);
    signal tx_start, tx_done: std_logic;
    signal clra_rom, inca_rom, clrb_ram, incb_ram: std_logic;
-   signal addrb_ram: std_logic_vector(9 downto 0);
+   signal addrb_ram: std_logic_vector(7 downto 0);
    signal addra_rom: std_logic_vector(4 downto 0);
    signal key, cphr_out: std_logic_vector(7 downto 0);
    signal wr: std_logic;
@@ -42,11 +48,14 @@ begin
       reset => reset,
       rx => rx,
       tx => tx,
+      tx_done => tx_done,
+      tx_start => tx_start,
+      rx_done =>rx_done,
       byte_to_transmit => ascii_t,
       received_byte => ascii_r
    );
    
-   rom_counter_unit: entity work.rom_counter_aditi(arch)
+   rom_counter_unit: entity work.rom_counter(arch)
 	generic map(N=>ROM_ADDR_WIDTH, M=>KEY_LENGTH)
    port map(
       clock => clk,
@@ -61,14 +70,14 @@ begin
       address => addrA_rom
 	);
 
-   rom_unit: entity work.rom_main_aditi(arch)
+   rom_unit: entity work.rom_main(arch)
    port map(
       rom_address => addra_rom,
       data => key
 	);
 
-   cnt_ram_unit: entity work.ram_counter(arch)
-   generic map(N=>RAM_ADDR_WIDTH)
+   cnt_ram_unit: entity work.ram_count(arch)
+--   generic map(address_size=>RAM_ADDR_WIDTH)
    port map(
       clock => clk,
 	  clear_address => clrB_ram,
@@ -76,8 +85,8 @@ begin
       address => addrB_ram
 	);
 
-   ram_unit: entity work.ram(arch)
-   generic map(ADDR_WIDTH=>RAM_ADDR_WIDTH, DATA_WIDTH=>RAM_DATA_WIDTH)
+   ram_unit: entity work.ram_block(arch)
+   generic map(address_size=>RAM_ADDR_WIDTH, data_size=>RAM_DATA_WIDTH)
    port map(
       clock => clk,
       write_enable => wr,
@@ -108,4 +117,5 @@ begin
 	   transmit_start => tx_start,
       transmit_done => tx_done
 	);
+	rx_done_p <= '1';
 end str_arch;

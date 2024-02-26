@@ -18,7 +18,7 @@ begin
     process(clock)
     begin
         if (clear_address='1' and increment='0') then
-            ram_address <=(others=>'0');
+            ram_address <= 0;
         end if;
         if (clear_address='0' and increment='1') then
             ram_address <= ram_address+1;

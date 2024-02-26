@@ -12,7 +12,7 @@ entity ram_block is
         write_enable : in std_logic;
         address : in std_logic_vector(0 to address_size-1);
         data_in : in std_logic_vector(0 to data_size-1);
-        data_out : out std_logic_vector(0 to data_size-10 t)
+        data_out : out std_logic_vector(0 to data_size-1)
     );
 end entity ram_block;
 

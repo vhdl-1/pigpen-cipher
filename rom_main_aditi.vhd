@@ -86,5 +86,6 @@ type rom_type is array (0 to 2**5 -1)
 begin
 
    -- the data becomes which address comes in
-data <= hex_to_letter(to_integer(unsigned(address)));
+--data <= hex_to_letter(to_integer(unsigned(address)));rom_address
+data <= hex_to_letter(to_integer(unsigned(rom_address)));
 end arch;
