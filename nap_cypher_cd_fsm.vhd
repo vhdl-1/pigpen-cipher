@@ -61,11 +61,11 @@ begin
    state_next <= state_reg;
    
    case state_reg is 
-   when clear =>
+   when clear => -- Initial state or state after transmit is done
         clr_RAM <= '1';
         clr_ROM <= '1';
         state_next <= receive;
-   when receive =>
+   when receive => -- Receive state where character by character is stored in RAM
         if (receive_done = '1') then
             if ((ascii_received >= x"41" and ascii_received <= x"5A") or -- If ascii is lower case a-z
                 (ascii_received >= x"61" and ascii_received <= x"7A") or -- If ascii is upper case A-Z
@@ -81,14 +81,14 @@ begin
                 end if;
             end if;
         end if;
-   when check_data =>
+   when check_data => -- Check data stored in RAM state
        if (ascii_transmitted = x"0D") then -- Checks ascii from RAM if Enter-value
            state_next <= clear; -- Sets state to Clear.
        else 
            transmit_start <= '1'; -- Set transmit signal to 1
            state_next <= transmit; -- Changes FSM state to transmit
        end if; 
-   when transmit =>
+   when transmit => -- State that increments ram when ascii is transmitted
         if (transmit_done = '1') then -- Checks if transmitted is done
             inc_RAM <= '1'; -- Sets ram increment signal to 1
             state_next <= check_data; -- State for checking next value on RAM
